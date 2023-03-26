@@ -18,6 +18,12 @@
   <link rel="stylesheet" href="{{ asset('assets/dist/css/adminlte.min.css') }}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+
+  {{-- datatables --}}
+  @yield('datatables_css')
+
+  {{-- multiple select --}}
+  @yield('multiple_select_css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -111,15 +117,25 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open mt-3">
-            <a href="{{ route('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}" >  {{-- ternary is active di class boostrapt --}}
+            <a href="{{ url('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}" >  {{-- ternary is active di class boostrapt --}}
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
             </a>
+            <ul>
+              <li>
+                <a href="{{ url('transaction') }}" class="nav-link {{ request()->is('transaction') ? 'active' : '' }}" >  {{-- ternary is active di class boostrapt --}}
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                   Transaction
+                  </p>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="nav-item menu-open mt-3">
-            <a href="{{ route('book') }}" class="nav-link {{ request()->is('book') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
+            <a href="{{ url('book') }}" class="nav-link {{ request()->is('book') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
               <i class="nav-icon fa fa-book"></i>
               <p>
                 Book
@@ -127,7 +143,7 @@
             </a>
           </li>
           <li class="nav-item menu-open mt-3">
-            <a href="{{ route('publisher') }}" class="nav-link {{ request()->is('publisher') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
+            <a href="{{ url('publisher') }}" class="nav-link {{ request()->is('publisher') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
               <i class="nav-icon fa fa-bell"></i>
               <p>
                 Publisher
@@ -135,7 +151,7 @@
             </a>
           </li>
           <li class="nav-item menu-open mt-3">
-            <a href="{{ route('catalog') }}" class="nav-link {{ request()->is('catalog') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
+            <a href="{{ url('catalog') }}" class="nav-link {{ request()->is('catalog') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
               <i class="nav-icon fa fa-bullhorn"></i>
               <p>
                 Catalog
@@ -143,10 +159,18 @@
             </a>
           </li>
           <li class="nav-item menu-open mt-3">
-            <a href="{{ route('author') }}" class="nav-link {{ request()->is('author') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
+            <a href="{{ url('author') }}" class="nav-link {{ request()->is('author') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
               <i class="nav-icon fa fa-bookmark"></i>
               <p>
                 Author
+              </p>
+            </a>
+          </li>
+          <li class="nav-item menu-open mt-3">
+            <a href="{{ url('detail_book') }}" class="nav-link {{ request()->is('detail_book') ? 'active' : '' }}" > {{-- ternary is active di class boostrapt --}}
+              <i class="nav-icon fa fa-bookmark"></i>
+              <p>
+                Detail Book
               </p>
             </a>
           </li>
@@ -187,14 +211,6 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
-    </div>
-  </footer>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -218,5 +234,16 @@
 <script src="{{ asset('assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
+
+{{-- datatables --}}
+@yield('datatables_js')
+
+{{-- multiple select js --}}
+@yield('multiple_select_js')
+
+{{-- cdn vue --}}
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+@yield('js')
 </body>
 </html>

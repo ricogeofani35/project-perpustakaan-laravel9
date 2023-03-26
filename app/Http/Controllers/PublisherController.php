@@ -14,9 +14,16 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publisher = Publisher::with('books')->get();
-
         return view('admin.publisher.publisher');
+    }
+
+    public function publishers_api() {
+        $publishers = Publisher::with('books')->orderBy('id', 'DESC')->get();
+
+        // membuat datanya menjadi rest api dengan bantuan yajra datatables
+        $datatables = datatables()->of($publishers)->addIndexColumn();
+
+        return $datatables->make(true);
     }
 
     /**
@@ -37,7 +44,21 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name'      => 'required',
+            'email'     => 'required|unique:publishers',
+            'phone_number'  => 'required',
+            'address'   => 'required'
+        ]);
+
+        Publisher::create([
+            'name'  => $request->name,
+            'email'  => $request->email,
+            'phone_number'  => $request->phone_number,
+            'address'  => $request->address,
+        ]);
+
+        return back();
     }
 
     /**
@@ -71,7 +92,9 @@ class PublisherController extends Controller
      */
     public function update(Request $request, Publisher $publisher)
     {
-        //
+        $publisher->update($request->all());
+
+        return back();
     }
 
     /**
@@ -82,6 +105,8 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        //
+        $publisher->delete();
+
+        return back();
     }
 }

@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class AuthorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,9 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('admin.author.author');
+        $authors = Author::all();
+
+        return view('admin.author.author', compact('authors'));
     }
 
     /**
@@ -24,7 +31,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.author.create');
     }
 
     /**
@@ -35,7 +42,21 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name'      => 'required',
+            'email'     => 'required',
+            'phone_number'  => 'required',
+            'address'   => 'required'
+        ]);
+
+        Author::create([
+            'name'      =>  $request->name,
+            'email'     => $request->email,  
+            'phone_number'     => $request->phone_number,  
+            'address'     => $request->address,  
+        ]);
+
+        return redirect('/author');
     }
 
     /**
@@ -55,9 +76,10 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function edit(Author $author)
+    public function edit($id)
     {
-        //
+        $authors = Author::find($id);
+        return view('admin.author.edit', compact('authors'));
     }
 
     /**
@@ -67,9 +89,24 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Author $author)
+    public function update(Request $request, $id)
     {
-        //
+
+        $this->validate($request, [
+            'name'      => 'required',
+            'email'     => 'required',
+            'phone_number'  => 'required',
+            'address'   => 'required'
+        ]);
+
+        Author::where('id', $id)->update([
+            'name'      => $request->name,
+            'email'      => $request->email,
+            'phone_number'      => $request->phone_number,
+            'address'      => $request->address,
+        ]);
+
+        return redirect('/author');
     }
 
     /**
@@ -78,8 +115,16 @@ class AuthorController extends Controller
      * @param  \App\Models\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Author $author)
+    public function destroy($id)
     {
-        //
+        // update author_id menjadi null
+        Book::where('author_id', $id)->update([
+            'author_id'     => null,
+        ]);
+
+        $author = Author::find($id);
+        $author->delete();
+
+        return redirect('/author');
     }
 }

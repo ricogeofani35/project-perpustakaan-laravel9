@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
               // foreign key
-            $table->foreign('transaction_id')->references('id')->on('transaction_details');
+            $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->foreign('book_id')->references('id')->on('books');
         });
     }
